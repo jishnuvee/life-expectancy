@@ -6,16 +6,19 @@ execute:
   echo: false
 ---
 
-We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question. A potential weakness of this model is that we are looking for the longevity for political candidates in general, but our data set only provides us with governor candidates since 1945, overlooking the other types of political candidates. We model the longevity of political candidates, measured as years lived after the election, as a linear function of sex and age at election.
 ```{r}
 #| message: false
 #| warning: false
-#| cache: true
+#| fig-cap: "Predicted Years Lived After Election by Age and Sex"
+#| fig-width: 6
+#| fig-height: 4
 
+library(ggplot2)
 library(tidyverse)
 library(primer.data)
 library(tidymodels)
 library(broom)
+library(marginaleffects)
 
 x <- governors
 
@@ -24,10 +27,42 @@ fit_years <- linear_reg(engine = "lm") |>
   fit(lived_after ~ sex + election_age, data = x) |>
   tidy(conf.int = TRUE)
 
-# View tidy results
+# Add predictions to the dataset using model coefficients
+predictions <- x %>%
+  mutate(
+    .pred = fit_years$estimate[1] +                        # intercept
+            fit_years$estimate[2] * (sex == "male") +      # adjust for sex if male
+            fit_years$estimate[3] * election_age           # age coefficient
+  )
+
+# Create the plot
+ggplot(predictions, aes(x = election_age, y = .pred, color = sex)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "loess", se = FALSE) +
+  labs(
+    title = "Predicted Years Lived After Election by Age and Sex",
+    subtitle = "Smoothed predictions from the fitted model",
+    x = "Age at Election",
+    y = "Predicted Years Lived",
+    color = "Sex"
+  )
+
+```
+
+###
+
+We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question. A potential weakness of this model is that we are looking for the longevity for political candidates in general, but our data set only provides us with governor candidates since 1945, overlooking the other types of political candidates. We model the longevity of political candidates, measured as years lived after the election, as a linear function of sex and age at election. Our model estimates that for each additional year of age at the time of election, political candidates live approximately 0.66 fewer years after the election (95% CI: –0.77 to –0.54), indicating that age is a significant predictor of post-election longevity.
+```{r}
+#| message: false
+#| warning: false
+#| cache: true
+
+# Model has already been fitted above — reprinting the tidied results
 fit_years
 
 ```
+
+
 
 ```{r}
 #| message: false
@@ -35,15 +70,13 @@ fit_years
 library(dplyr)
 library(knitr)
 
-fit_years |>  # Remove tidy() since fit_years is already tidied
+fit_years |> 
   select(term, estimate, conf.low, conf.high) |>
   kable(digits = 2, col.names = c("Variable", "Estimate", "Lower CI", "Upper CI"))
+
 ```
 
 
 
-
-$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_n X_n + \epsilon$$
-with $\epsilon \sim \mathcal{N}(0, \sigma^2)$.
 
 
