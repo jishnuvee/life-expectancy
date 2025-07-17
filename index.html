@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jishnu Veerapaneni">
 
 <title>Life Expectancy for Political Candidates</title>
 <style>
@@ -112,8 +113,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -127,6 +134,12 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Jishnu Veerapaneni </p>
+          </div>
+  </div>
     
   
     
@@ -137,10 +150,66 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This is a Quarto website.</p>
-<p>To learn more about Quarto websites visit <a href="https://quarto.org/docs/websites" class="uri">https://quarto.org/docs/websites</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption>Predicted Years Lived After Election by Age and Sex</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+<p>We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question. A potential weakness of this model is that we are looking for the longevity for political candidates in general, but our data set only provides us with governor candidates since 1945, overlooking the other types of political candidates. We model the longevity of political candidates, measured as years lived after the election, as a linear function of sex and age at election. Our model estimates that for each additional year of age at the time of election, political candidates live approximately 0.66 fewer years after the election (95% CI: –0.77 to –0.54), indicating that age is a significant predictor of post-election longevity.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 7
+  term         estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    58.3      2.58     22.6    3.50e-106   53.3      63.4  
+2 sexMale         0.146    2.40      0.0607 9.52e-  1   -4.56      4.85 
+3 election_age   -0.681    0.0167  -40.7    6.58e-298   -0.714    -0.649</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower CI</th>
+<th style="text-align: right;">Upper CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">58.31</td>
+<td style="text-align: right;">53.26</td>
+<td style="text-align: right;">63.36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sexMale</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-4.56</td>
+<td style="text-align: right;">4.85</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">election_age</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.65</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
