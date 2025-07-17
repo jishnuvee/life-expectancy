@@ -6,15 +6,44 @@ execute:
   echo: false
 ---
 
-We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question.
+We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question. A potential weakness of this model is that we are looking for the longevity for political candidates in general, but our data set only provides us with governor candidates since 1945, overlooking the other types of political candidates. We model the longevity of political candidates, measured as years lived after the election, as a linear function of sex and age at election.
+```{r}
+#| message: false
+#| warning: false
+#| cache: true
 
+library(tidyverse)
+library(primer.data)
+library(tidymodels)
+library(broom)
 
+x <- governors
 
+# Fit the model and store the tidied results
+fit_years <- linear_reg(engine = "lm") |> 
+  fit(lived_after ~ sex + election_age, data = x) |>
+  tidy(conf.int = TRUE)
+
+# View tidy results
+fit_years
+
+```
 
 ```{r}
 #| message: false
 #| warning: false
-library(tidyverse)
-library(primer.data)
+library(dplyr)
+library(knitr)
+
+fit_years |>  # Remove tidy() since fit_years is already tidied
+  select(term, estimate, conf.low, conf.high) |>
+  kable(digits = 2, col.names = c("Variable", "Estimate", "Lower CI", "Upper CI"))
 ```
+
+
+
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_n X_n + \epsilon$$
+with $\epsilon \sim \mathcal{N}(0, \sigma^2)$.
+
 

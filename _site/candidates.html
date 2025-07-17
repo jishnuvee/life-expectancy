@@ -69,6 +69,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -140,7 +169,52 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question.</p>
+<p>We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question. A potential weakness of this model is that we are looking for the longevity for political candidates in general, but our data set only provides us with governor candidates since 1945, overlooking the other types of political candidates.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 7
+  term         estimate std.error statistic   p.value conf.low conf.high
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    58.3      2.58     22.6    3.50e-106   53.3      63.4  
+2 sexMale         0.146    2.40      0.0607 9.52e-  1   -4.56      4.85 
+3 election_age   -0.681    0.0167  -40.7    6.58e-298   -0.714    -0.649</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: right;">Estimate</th>
+<th style="text-align: right;">Lower CI</th>
+<th style="text-align: right;">Upper CI</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">58.31</td>
+<td style="text-align: right;">53.26</td>
+<td style="text-align: right;">63.36</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sexMale</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">-4.56</td>
+<td style="text-align: right;">4.85</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">election_age</td>
+<td style="text-align: right;">-0.68</td>
+<td style="text-align: right;">-0.71</td>
+<td style="text-align: right;">-0.65</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_n X_n + \epsilon\]</span> with <span class="math inline">\(\epsilon \sim \mathcal{N}(0, \sigma^2)\)</span>.</p>
 
 
 
