@@ -2,5 +2,19 @@
 title: "Life Expectancy for Political Candidates"
 author: "Jishnu Veerapaneni"
 format: html
+execute: 
+  echo: false
 ---
+
+We are attempting to help aspiring candidates in making a decision to run for office and understand the likelihood how many years they may live after the election depending on factors such as age at time of election. The question we are attempting to answer is how long do political candidates live after the election, and we obtained data from over 1,000 candidates for governor since 1945 in the United States, to answer this question.
+
+
+
+
+```{r}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(primer.data)
+```
 
